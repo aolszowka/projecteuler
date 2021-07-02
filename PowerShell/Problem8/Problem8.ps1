@@ -2,6 +2,11 @@
 
 $adjacentDigits = 13
 $greatestNumber = 0
+
+# Use a sliding window to create a number that is $adjacentDigitsLong by sorting
+# the adjacentDigits. IE 531 becomes 135, we do this because of the associative
+# property of multiplication means that 351, 135, 531 are all equivalent, so we
+# only need to keep the largest $adjacentDigit value we find.
 for ($i = 0; $i -lt $givenNumber.Length - $adjacentDigits; $i++) {
     $nextAdjDigits = [string]::new($($($givenNumber.Substring($i, $adjacentDigits).ToCharArray()) | Sort-Object))
     $adjDigitsValue = [long]::Parse($nextAdjDigits)
@@ -10,6 +15,8 @@ for ($i = 0; $i -lt $givenNumber.Length - $adjacentDigits; $i++) {
     }
 }
 
+# Now take our largest $adjacentDigit generated number, split it back out, and
+# then multiply it out to get the answer.
 $product = 1
 foreach($char in $greatestNumber.ToString().ToCharArray()) {
     $product = $product * $([int]::Parse($char))
