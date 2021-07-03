@@ -55,4 +55,8 @@ $pythagorean = Get-Pythagorean -Limit $Target | ForEach-Object {
     }
 }
 
+Write-Output "This is the First Matching Pythagorean"
+$pythagorean
+
+Write-Output "`nThis is the Product of A * B * C"
 $pythagorean.A * $pythagorean.B * $pythagorean.C
