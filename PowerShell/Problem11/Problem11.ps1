@@ -44,6 +44,12 @@ function Problem11 {
         # return this it gets converted to an [int[]] with no apparent way
         # to convert this back.
 
+        # You need to cover the following Directions:
+        # Down / Up
+        # Right / Left
+        # Diag Down Right / Diag Up Right
+        # Diag Down Left / Diag Up Right
+
         $greatestProduct = 0
         for ($x = 0; $x -lt $Dimension; $x++) {
             for ($y = 0; $y -lt $Dimension; $y++) {
