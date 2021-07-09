@@ -48,6 +48,7 @@ function Problem11 {
         for ($x = 0; $x -lt $Dimension; $x++) {
             for ($y = 0; $y -lt $Dimension; $y++) {
                 # Down Direction
+                # Also Covers Up Because multiplication is associative
                 $DownDirectionProduct = 1
                 if (($x + $Adjacent) -lt $Dimension) {
                     for ($k = 0; $k -lt $Adjacent; $k++) {
@@ -59,6 +60,7 @@ function Problem11 {
                 }
 
                 # Right Direction
+                # Also Covers Left Because multiplication is associative
                 $LeftDirectionProduct = 1
                 if (($y + $Adjacent) -lt $Dimension) {
                     for ($k = 0; $k -lt $Adjacent; $k++) {
@@ -81,6 +83,7 @@ function Problem11 {
                 }
 
                 # Diag Down Left Direction
+                # Also Covers Diag Up Left Because multiplication is associative
                 $DiagDownLeft = 1
                 if ((($x - $Adjacent) -ge 0) && (($y - $Adjacent) -ge 0)) {
                     for ($k = 0; $k -lt $Adjacent; $k++) {
@@ -101,19 +104,6 @@ function Problem11 {
                 if ($greatestProduct -lt $DiagUpRight) {
                     $greatestProduct = $DiagUpRight
                 }
-
-                # This is not needed because this is the same as Diag Down Left
-                # Because multiplication is associative
-                # # Diag Up Left Direction
-                # $DiagUpLeft = 1
-                # if ((($x - $Adjacent) -ge 0) && (($y - $Adjacent) -ge 0)) {
-                #     for ($k = 0; $k -lt $Adjacent; $k++) {
-                #         $DiagUpLeft = $DiagUpLeft * $InputGrid[($x - $k), ($y - $k)]
-                #     }
-                # }
-                # if ($greatestProduct -lt $DiagUpLeft) {
-                #     $greatestProduct = $DiagUpLeft
-                # }
             }
         }
 
