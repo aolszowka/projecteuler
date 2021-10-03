@@ -82,7 +82,7 @@ function Get-PrimeFactorization {
         function Update-PrimeSieve {
             [CmdletBinding()]
             param (
-                [long]$UpperBound
+                [long]$Target
             )
             
             begin {
@@ -92,19 +92,22 @@ function Get-PrimeFactorization {
                 }
             }
             process {
-                if ($global:primeSieve.Last.Value -lt $UpperBound) {
-                    for ($i = $global:primeSieve.Last.Value + 1; $i -le $UpperBound; $i++) {
-                        $isPrime = $true
-                        foreach ($prime in $global:primeSieve) {
-                            if ($i % $prime -eq 0) {
-                                $isPrime = $false
-                                break
-                            }
+                if ($Target -gt $global:primeSieve.Last.Value) {
+                    $sqrt = [Math]::Ceiling($([Math]::Sqrt($Target)))
+                    $isPrime = $true
+                    foreach ($prime in $global:primeSieve) {
+                        if ($prime -gt $sqrt) {
+                            break
                         }
 
-                        if ($isPrime) {
-                            $global:primeSieve.Add($i) | Out-Null
+                        if ($Target % $prime -eq 0) {
+                            $isPrime = $false
+                            break
                         }
+                    }
+
+                    if ($isPrime) {
+                        $global:primeSieve.Add($Target) | Out-Null
                     }
                 }
             }
@@ -116,9 +119,9 @@ function Get-PrimeFactorization {
             $Target
         }
         else {
-            Update-PrimeSieve -UpperBound $Target
+            Update-PrimeSieve -Target $Target
             $firstPrimeDivisibleBy = $global:primeSieve | Where-Object { $Target % $_ -eq 0 } | Select-Object -First 1
-            if ($firstPrimeDivisibleBy -eq 0) {
+            if ($null -eq $firstPrimeDivisibleBy -or $firstPrimeDivisibleBy -eq 0) {
                 throw "This is bad!"
             }
             $remainder = $Target / $firstPrimeDivisibleBy
@@ -133,38 +136,11 @@ function Get-PrimeFactorization {
     }
 }
 
-# Get-TriangleNumbers | ForEach-Object {
-#    $numberOfDivisors = Get-NumberOfDivisors -Target $_
-#    if ($numberOfDivisors -gt 500) {
-#        $_
-#        break
-#    }
-# }
-
-
-function Get-NumberOfDivisors2 {
-    [CmdletBinding()]
-    param (
-        [Parameter(Mandatory)]
-        [long]$Target
-    )
-    process {
-        $nod = 0
-        $sqrt = [int]$([Math]::Sqrt($Target))
-
-        for($i=1;$i -le $sqrt; $i++) {
-            if($Target % $i -eq 0) {
-                $nod += 2
-            }
-        }
-
-        if($sqrt * $sqrt -eq $Target) {
-            $nod--
-        }
-
-        $nod
+#Get-PrimeFactorization 28
+Get-TriangleNumbers | ForEach-Object {
+    $numberOfDivisors = Get-NumberOfDivisors -Target $_
+    if ($numberOfDivisors -gt 500) {
+        $_
+        break
     }
 }
-
-Get-NumberOfDivisors2 28
-Get-PrimeFactorization 28
